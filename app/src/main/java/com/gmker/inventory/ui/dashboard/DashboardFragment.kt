@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -12,14 +13,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.gmker.inventory.R
 import com.gmker.inventory.dataBase.AppDatabase
 import com.gmker.inventory.dataBase.Ingredient
 import com.gmker.inventory.dataBase.IngredientDao
 import com.gmker.inventory.databinding.FragmentDashboardBinding
 import com.gmker.inventory.ui.BaseAdapter
+import com.gmker.inventory.ui.DashBoardFragmentVarHolder
+import com.gmker.inventory.ui.InsertBSDView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : Fragment(), DashBoardFragmentVarHolder {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -31,8 +37,8 @@ class DashboardFragment : Fragment() {
     private lateinit var db: AppDatabase
     private lateinit var ingredientDao: IngredientDao
 
-    private lateinit var mBtn: Button
-    private var count = 0
+    private lateinit var addBtn: ImageView
+    private lateinit var mBottomSheet: BottomSheetDialog
 
     private var dataList = mutableListOf<Ingredient?>()
 
@@ -50,14 +56,50 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        doToolbarInit()
         doAdapterInit()
-
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun getBSD(): BottomSheetDialog {
+        return mBottomSheet
+    }
+
+    override fun setBSD(dialog: BottomSheetDialog) {
+        mBottomSheet = dialog
+    }
+
+    override fun getDao(): IngredientDao {
+        return ingredientDao
+    }
+
+    override fun setDao(dao: IngredientDao) {
+        ingredientDao = dao
+    }
+
+    private fun doToolbarInit() {
+        val t = activity?.findViewById<Toolbar>(R.id.toolbar)
+        t?.addView(LayoutInflater.from(activity).inflate(R.layout.toolbar_dashborad, t, false))
+
+        val bottomSheetView = InsertBSDView(requireActivity())
+        bottomSheetView.setHolder(this)
+
+        mBottomSheet = BottomSheetDialog(requireActivity(), R.style.BottomSheetDialogTheme)
+        mBottomSheet.setContentView(bottomSheetView)
+        mBottomSheet.setOnShowListener {
+            mBottomSheet.behavior.skipCollapsed = true
+            mBottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        addBtn = activity?.findViewById(R.id.add_btn)!!
+        addBtn.setOnClickListener {
+            mBottomSheet.show()
+        }
     }
 
     private fun doAdapterInit() {
@@ -68,22 +110,13 @@ class DashboardFragment : Fragment() {
 
         val dashboardViewModel =
             ViewModelProvider(this)[DashboardViewModel::class.java]
-
+        // 随数据库更新
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 dashboardViewModel.list.collect { ingredients ->
                     mAdapter.submitList(ingredients)
                 }
             }
-        }
-
-        mBtn = binding.addBtn
-        mBtn.setOnClickListener {
-            Thread {
-                val t = Ingredient(name = "test", amount = count, unit = "kg")
-                count += 1
-                ingredientDao.insert(t)
-            }.start()
         }
     }
 }

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 @Entity(tableName = "Ingredients")
 class Ingredient(@PrimaryKey(autoGenerate = true) var id: Int = 0,
                  @field:ColumnInfo(name = "ingredient_name") var name: String,
-                 @field:ColumnInfo(name = "ingredient_amount") var amount: Int,
+                 @field:ColumnInfo(name = "ingredient_amount") var amount: Float,
                  @field:ColumnInfo(name = "ingredient_unit") var unit: String)
 
 @Dao
