@@ -1,13 +1,26 @@
 package com.gmker.inventory.ui.dashboard
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.gmker.inventory.dataBase.AppDatabase
+import com.gmker.inventory.dataBase.Ingredient
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class DashboardViewModel : ViewModel() {
+    private var ingredientDao = AppDatabase.INSTANCE?.ingredientDao()!!
+    val list: Flow<List<Ingredient>> = ingredientDao.getAllIngredients()
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+    fun insert(ingredient: Ingredient) = viewModelScope.launch {
+        ingredientDao.insert(ingredient)
     }
-    val text: LiveData<String> = _text
+
+    fun update(ingredient: Ingredient) = viewModelScope.launch {
+        ingredientDao.update(ingredient)
+    }
+
+    fun delete(ingredient: Ingredient) = viewModelScope.launch {
+        ingredientDao.delete(ingredient)
+    }
 }

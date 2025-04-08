@@ -48,5 +48,6 @@ dependencies {
     implementation libs.androidx.navigation.ui.ktx
     implementation libs.androidx.room.ktx
     implementation libs.androidx.room.runtime
+    implementation libs.androidx.swiperefreshlayout
     kapt "androidx.room:room-compiler:2.6.1"
 }
