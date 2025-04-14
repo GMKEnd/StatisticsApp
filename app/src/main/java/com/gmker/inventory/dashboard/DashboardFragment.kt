@@ -19,11 +19,13 @@ import com.gmker.inventory.dataBase.Ingredient
 import com.gmker.inventory.dataBase.IngredientDao
 import com.gmker.inventory.databinding.FragmentDashboardBinding
 import com.gmker.inventory.ui.BaseAdapter
+import com.gmker.inventory.ui.bottomSheetDialog.MoreOptionsDialog
 import com.gmker.inventory.ui.bottomSheetDialog.NewIngredientDialog
+import com.gmker.inventory.util.VarHolder
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : Fragment(), VarHolder {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -36,9 +38,8 @@ class DashboardFragment : Fragment() {
     private lateinit var ingredientDao: IngredientDao
 
     private lateinit var addBtn: ImageView
-    private lateinit var mBottomSheet: BottomSheetDialog
-
-    private var dataList = mutableListOf<Ingredient?>()
+    private lateinit var mNewIngredientDialog: NewIngredientDialog
+    private lateinit var mMoreOptionsDialog: MoreOptionsDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,13 +71,14 @@ class DashboardFragment : Fragment() {
         t?.addView(LayoutInflater.from(activity).inflate(R.layout.toolbar_dashborad, t, false))
         addBtn = activity?.findViewById(R.id.add_btn)!!
         addBtn.setOnClickListener {
-            mBottomSheet.show()
+            mNewIngredientDialog.show()
         }
-        mBottomSheet = NewIngredientDialog(requireActivity())
+        mNewIngredientDialog = NewIngredientDialog(requireActivity())
     }
 
     private fun doAdapterInit() {
-        mAdapter = BaseAdapter(dataList)
+        mAdapter = BaseAdapter()
+        mAdapter.setHolder(this)
         mRecyclerView = binding.ingredientRv
         mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
@@ -91,5 +93,10 @@ class DashboardFragment : Fragment() {
                 }
             }
         }
+        mMoreOptionsDialog = MoreOptionsDialog(requireActivity())
+    }
+
+    override fun getBsd(): MoreOptionsDialog {
+        return mMoreOptionsDialog
     }
 }
