@@ -1,6 +1,5 @@
-package com.gmker.inventory.ui.dashboard
+package com.gmker.inventory.dashboard
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gmker.inventory.dataBase.AppDatabase

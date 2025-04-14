@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FixedHintTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!-- 固定提示文字颜色 -->
+        <item name="hintTextColor">@color/black</item>
+        <!-- 固定边框颜色 -->
+        <item name="boxStrokeColor">@color/black</item>
+        <!-- 禁用聚焦时的颜色变化动画 -->
+        <item name="materialThemeOverlay">@style/NoColorChangeOverlay</item>
+    </style>
+
+    <style name="NoColorChangeOverlay" parent="">
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorOnSurface">@color/black</item>
+    </style>
+</resources>

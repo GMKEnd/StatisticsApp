@@ -1,4 +1,4 @@
-package com.gmker.inventory.ui.home
+package com.gmker.inventory.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

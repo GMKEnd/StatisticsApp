@@ -1,34 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingTop="10dp">
 
-    <EditText
-        android:id="@+id/editText_ingredientName"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/FixedHintTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:hint="名称" />
+        android:hint="名称"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxBackgroundMode="outline">
 
-    <EditText
-        android:id="@+id/editText_ingredientAmount"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_ingredientName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/FixedHintTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="numberDecimal"
-        android:hint="数量" />
+        android:hint="数量"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxBackgroundMode="outline">
 
-    <EditText
-        android:id="@+id/editText_ingredientUnit"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_ingredientAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/FixedHintTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:hint="单位" />
+        android:hint="单位"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxBackgroundMode="outline">
 
-    <ImageView
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_ingredientUnit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/grey" />
@@ -41,7 +69,7 @@
         android:text="添加"
         android:textColor="@color/black" />
 
-    <ImageView
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grey" />

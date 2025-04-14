@@ -18,6 +18,8 @@ class BaseAdapter(private val testList: List<Ingredient?>) : ListAdapter<Ingredi
             binding.ingredientName.text = ingredient.name
             binding.ingredientAmount.text = ingredient.amount.toString()
             binding.ingredientUnit.text = ingredient.unit
+            binding.moreBtn.setOnClickListener {
+            }
         }
     }
 

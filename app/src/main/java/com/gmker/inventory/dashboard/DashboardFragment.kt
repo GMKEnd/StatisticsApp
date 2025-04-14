@@ -1,4 +1,4 @@
-package com.gmker.inventory.ui.dashboard
+package com.gmker.inventory.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,13 +19,11 @@ import com.gmker.inventory.dataBase.Ingredient
 import com.gmker.inventory.dataBase.IngredientDao
 import com.gmker.inventory.databinding.FragmentDashboardBinding
 import com.gmker.inventory.ui.BaseAdapter
-import com.gmker.inventory.ui.DashBoardFragmentVarHolder
-import com.gmker.inventory.ui.InsertBSDView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.gmker.inventory.ui.bottomSheetDialog.NewIngredientDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 
-class DashboardFragment : Fragment(), DashBoardFragmentVarHolder {
+class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -66,45 +64,20 @@ class DashboardFragment : Fragment(), DashBoardFragmentVarHolder {
         _binding = null
     }
 
-    override fun getBSD(): BottomSheetDialog {
-        return mBottomSheet
-    }
-
-    override fun setBSD(dialog: BottomSheetDialog) {
-        mBottomSheet = dialog
-    }
-
-    override fun getDao(): IngredientDao {
-        return ingredientDao
-    }
-
-    override fun setDao(dao: IngredientDao) {
-        ingredientDao = dao
-    }
-
     private fun doToolbarInit() {
         val t = activity?.findViewById<Toolbar>(R.id.toolbar)
+        // 新建ingredient按钮
         t?.addView(LayoutInflater.from(activity).inflate(R.layout.toolbar_dashborad, t, false))
-
-        val bottomSheetView = InsertBSDView(requireActivity())
-        bottomSheetView.setHolder(this)
-
-        mBottomSheet = BottomSheetDialog(requireActivity(), R.style.BottomSheetDialogTheme)
-        mBottomSheet.setContentView(bottomSheetView)
-        mBottomSheet.setOnShowListener {
-            mBottomSheet.behavior.skipCollapsed = true
-            mBottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-
         addBtn = activity?.findViewById(R.id.add_btn)!!
         addBtn.setOnClickListener {
             mBottomSheet.show()
         }
+        mBottomSheet = NewIngredientDialog(requireActivity())
     }
 
     private fun doAdapterInit() {
         mAdapter = BaseAdapter(dataList)
-        mRecyclerView = binding.recyclerView
+        mRecyclerView = binding.ingredientRv
         mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
